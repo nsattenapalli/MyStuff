@@ -4,6 +4,17 @@ public class JavaEight extends AbstractClass{
 	void test() {
 		System.out.println("calling abstract class by override");
 	}
+	public int trycatch() {
+		try {
+			return 0;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			System.out.println("finally block");
+		}
+		return 1;
+	}
 	public static void main(String[] args) {
 	Java8 j8 = new Java8() {
 		@Override
@@ -26,5 +37,6 @@ public class JavaEight extends AbstractClass{
 	ac.test();
 	JavaEight je = new JavaEight();
 	je.test();
+	System.out.println(je.trycatch());
 	}
 }
