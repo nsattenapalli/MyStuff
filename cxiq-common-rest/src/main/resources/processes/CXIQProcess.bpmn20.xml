@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="CXIQTestProcess" name="CXIQTestProcess" isExecutable="true">
+    <startEvent id="sid-13DBEEB2-3414-436D-92AC-2E1395659C2A"></startEvent>
+    <userTask id="sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE" name="${priority} : CXIQ Action on ${topic}" activiti:assignee="${assignee}" activiti:priority="${taskpriority}">
+      <documentation>${subject}.${description}</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.cxiq.triage.CXIQTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="sid-17F54835-B295-4BED-8871-93DA8CFFD12A"></endEvent>
+    <serviceTask id="sid-3A3EABDF-FD4C-4A85-A0BB-AEB26EDB5FA4" name="SendMail" activiti:type="mail">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${assignee}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[techsophy.activity@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[${priority} : CXIQAction on ${topic}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="html">
+          <activiti:expression><![CDATA[<html>
+	<body style="background-color: #e8edf1; padding: 0; margin: 0;">
+		<table width="100%"  height="400" cellpadding="0" cellspacing="0" style="margin:0; padding:0;font-family:Helvetica,Arial,sans-serif">
+			<tr height="20"><td colspan="3" style="padding:8px"></td></tr>
+			<tr>
+				<td width="10%" style="padding:8px"></td>
+				<td width="80%" valign="top" style="padding:8px">
+					<table class="" style="background-color: #ffffff;" width="100%;border-collapse:collapse;border-spacing:0" cellpadding="0" cellspacing="0">
+						<tr height="15"><td colspan="3" style="padding:8px"></td></tr>
+						<tr>
+							<td width="15" style="padding:8px"></td>
+							<td valign="center" style="font-size: 16px;font-family: 'Open Sans', Helvetica, sans-serif; font-weight: bold;padding: 8px">${taskCreator} has created a ${priority} priority task for you! </td>
+							
+							<td width="15" style="padding:8px"></td>
+						</tr>
+						
+						<tr colspan="3" height="25"><td style="padding:8px"></td></tr>
+						<tr>
+							<td width="15" style="padding:8px"><b>Subject:</b></td>
+							<td valign="top" style="font-size: 14px;font-family: 'Open Sans', Helvetica, sans-serif;padding: 8px">
+								${subject} 
+							</td>
+							<td width="15" style="padding:8px"></td>
+						</tr>
+						<tr>
+							<td width="15" style="padding:8px"><b>Description:</b></td>
+							<td valign="top" style="font-size: 14px;font-family: 'Open Sans', Helvetica, sans-serif;padding: 8px">
+								${description}  
+							</td>
+							<td width="15" style="padding:8px"></td>
+						</tr>
+						<tr height="30"><td style="padding:8px" colspan="3">The task appears in your Activiti inbox.</td></tr>
+						<tr>
+							<td width="15" style="padding:8px"></td>
+							<td valign="top" style="padding:8px">
+								<table style="background-color: #ffffff;" width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td valign="middle" style="font-size: 15px;font-family: 'Open Sans', Helvetica, sans-serif; text-align: left; font-weight: bold;  color: #ffffff;padding: 8px">
+											<a href="${taskDirectUrl}/${CXIQ_TASKID}" title="Open the task" style="text-decoration: none; text-align: center;color: #ffffff; display: inline-block; width: 300px; padding: 10px 0px;background-color: #36a7c4; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;">Open the task</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td width="15" style="padding:8px"></td>
+						</tr>
+						
+						
+						<tr height="15"><td colspan="3" style="padding:8px"></td></tr>
+						<tr>
+							<td width="15" style="padding:8px"></td>
+							<td style="font-size: 11px;font-family: 'Open Sans', Helvetica, sans-serif;  color:#666666;padding: 8px">
+								This email is sent to you by <a href="${homeUrl}" style="color: #666666;">Alfresco Activiti</a>. If you are not the intended recipient of this email, <a href="${homeUrl}" style="color: #666666;">please contacts us</a>.
+							</td>
+							<td width="15"></td>
+						</tr>
+						<tr height="25" style="padding:8px"><td colspan="3" style="padding:8px"></td></tr>
+					</table>
+				</td>
+				<td width="10%" style="padding:8px"></td>
+			</tr>
+		</table>
+	</body>
+</html>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-969A591B-A5A3-45C5-A0E0-E4B953F7748B" sourceRef="sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE" targetRef="sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5"></sequenceFlow>
+    <sequenceFlow id="sid-245C4DA2-5421-48BC-A10D-4065839326D4" sourceRef="sid-3A3EABDF-FD4C-4A85-A0BB-AEB26EDB5FA4" targetRef="sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5"></sequenceFlow>
+    <sequenceFlow id="sid-6643430C-EC36-4AD3-8DBF-7B208A1DF96D" sourceRef="sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5" targetRef="sid-17F54835-B295-4BED-8871-93DA8CFFD12A"></sequenceFlow>
+    <sequenceFlow id="sid-9352AF26-7CCA-4289-93DE-CD258DEAB825" sourceRef="sid-13DBEEB2-3414-436D-92AC-2E1395659C2A" targetRef="sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE"></sequenceFlow>
+    <parallelGateway id="sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5"></parallelGateway>
+    <boundaryEvent id="sid-5ECEB459-CB87-46CD-AB95-07789B35F1B2" attachedToRef="sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE" cancelActivity="false">
+      <timerEventDefinition>
+        <timeDuration>PT2S</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="sid-A5E71095-C418-48BC-AD9C-25FD0EC08217" sourceRef="sid-5ECEB459-CB87-46CD-AB95-07789B35F1B2" targetRef="sid-3A3EABDF-FD4C-4A85-A0BB-AEB26EDB5FA4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${CXIQ_TASKID}>0]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CXIQProcess">
+    <bpmndi:BPMNPlane bpmnElement="CXIQProcess" id="BPMNPlane_CXIQProcess">
+      <bpmndi:BPMNShape bpmnElement="sid-13DBEEB2-3414-436D-92AC-2E1395659C2A" id="BPMNShape_sid-13DBEEB2-3414-436D-92AC-2E1395659C2A">
+        <omgdc:Bounds height="30.0" width="30.0" x="75.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE" id="BPMNShape_sid-4C8A0EF8-F552-48DA-9C4B-9DF55DE5F7EE">
+        <omgdc:Bounds height="80.0" width="100.0" x="195.0" y="15.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-17F54835-B295-4BED-8871-93DA8CFFD12A" id="BPMNShape_sid-17F54835-B295-4BED-8871-93DA8CFFD12A">
+        <omgdc:Bounds height="28.0" width="28.0" x="585.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-3A3EABDF-FD4C-4A85-A0BB-AEB26EDB5FA4" id="BPMNShape_sid-3A3EABDF-FD4C-4A85-A0BB-AEB26EDB5FA4">
+        <omgdc:Bounds height="80.0" width="100.0" x="195.0" y="155.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5" id="BPMNShape_sid-99DC1A05-FD9C-42B5-A44E-5B0BE0C0D9D5">
+        <omgdc:Bounds height="40.0" width="40.0" x="495.0" y="175.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-5ECEB459-CB87-46CD-AB95-07789B35F1B2" id="BPMNShape_sid-5ECEB459-CB87-46CD-AB95-07789B35F1B2">
+        <omgdc:Bounds height="31.0" width="31.0" x="231.676045570515" y="79.75684305452751"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-6643430C-EC36-4AD3-8DBF-7B208A1DF96D" id="BPMNEdge_sid-6643430C-EC36-4AD3-8DBF-7B208A1DF96D">
+        <omgdi:waypoint x="535.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A5E71095-C418-48BC-AD9C-25FD0EC08217" id="BPMNEdge_sid-A5E71095-C418-48BC-AD9C-25FD0EC08217">
+        <omgdi:waypoint x="247.2447697707174" y="111.75102953538702"></omgdi:waypoint>
+        <omgdi:waypoint x="246.07858139659353" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9352AF26-7CCA-4289-93DE-CD258DEAB825" id="BPMNEdge_sid-9352AF26-7CCA-4289-93DE-CD258DEAB825">
+        <omgdi:waypoint x="105.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="195.0" y="55.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-969A591B-A5A3-45C5-A0E0-E4B953F7748B" id="BPMNEdge_sid-969A591B-A5A3-45C5-A0E0-E4B953F7748B">
+        <omgdi:waypoint x="295.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="55.0"></omgdi:waypoint>
+        <omgdi:waypoint x="515.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-245C4DA2-5421-48BC-A10D-4065839326D4" id="BPMNEdge_sid-245C4DA2-5421-48BC-A10D-4065839326D4">
+        <omgdi:waypoint x="295.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

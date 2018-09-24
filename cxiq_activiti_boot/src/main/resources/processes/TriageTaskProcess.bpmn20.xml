@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="TriageTaskProcess" name="TriageTaskProcess" isExecutable="true">
+    <startEvent id="sid-588707DD-3769-4400-8295-B3CFBCCE0AA2"></startEvent>
+    <endEvent id="sid-19289779-CEB6-4896-8332-2CBCBBC09341"></endEvent>
+    <userTask id="sid-EF6E917C-8816-443C-B319-911B9E25F42B" name="${id.id} - ${id.groupName}" activiti:candidateGroups="nps_group_${tenantId}_${brand}_${id.groupId}">
+      <documentation>${id.content}</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.cxiq.CXIQTriageTaskListener"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="UpdateStatusAsCompleted" name="UpdateStatusAsCompleted" activiti:class="com.cxiq.UpdateTriageRecord">
+      <extensionElements>
+        <activiti:field name="statusVal">
+          <activiti:string><![CDATA[Completed]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-C45300A2-051D-4C9F-A922-41BADB5C8FBF" sourceRef="UpdateStatusAsCompleted" targetRef="sid-19289779-CEB6-4896-8332-2CBCBBC09341"></sequenceFlow>
+    <sequenceFlow id="sid-DA12D6C8-5831-46D7-8759-B53A5B6EE773" sourceRef="sid-EF6E917C-8816-443C-B319-911B9E25F42B" targetRef="UpdateStatusAsCompleted"></sequenceFlow>
+    <serviceTask id="UpdateStatusAsProcessed" name="UpdateStatusAsProcessed" activiti:class="com.cxiq.UpdateTriageRecord">
+      <extensionElements>
+        <activiti:field name="statusVal">
+          <activiti:string><![CDATA[Processed]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-C54EDB00-E7BD-4CE8-9E90-16C7E882331F" sourceRef="sid-588707DD-3769-4400-8295-B3CFBCCE0AA2" targetRef="UpdateStatusAsProcessed"></sequenceFlow>
+    <sequenceFlow id="sid-44F4EFEF-81EB-4E51-8658-011C0683C5FE" sourceRef="UpdateStatusAsProcessed" targetRef="sid-EF6E917C-8816-443C-B319-911B9E25F42B"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_TriageTaskProcess">
+    <bpmndi:BPMNPlane bpmnElement="TriageTaskProcess" id="BPMNPlane_TriageTaskProcess">
+      <bpmndi:BPMNShape bpmnElement="sid-588707DD-3769-4400-8295-B3CFBCCE0AA2" id="BPMNShape_sid-588707DD-3769-4400-8295-B3CFBCCE0AA2">
+        <omgdc:Bounds height="30.0" width="30.0" x="45.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-19289779-CEB6-4896-8332-2CBCBBC09341" id="BPMNShape_sid-19289779-CEB6-4896-8332-2CBCBBC09341">
+        <omgdc:Bounds height="28.0" width="28.0" x="930.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-EF6E917C-8816-443C-B319-911B9E25F42B" id="BPMNShape_sid-EF6E917C-8816-443C-B319-911B9E25F42B">
+        <omgdc:Bounds height="80.0" width="100.0" x="420.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UpdateStatusAsCompleted" id="BPMNShape_UpdateStatusAsCompleted">
+        <omgdc:Bounds height="80.0" width="100.0" x="765.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UpdateStatusAsProcessed" id="BPMNShape_UpdateStatusAsProcessed">
+        <omgdc:Bounds height="80.0" width="100.0" x="135.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-DA12D6C8-5831-46D7-8759-B53A5B6EE773" id="BPMNEdge_sid-DA12D6C8-5831-46D7-8759-B53A5B6EE773">
+        <omgdi:waypoint x="520.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-44F4EFEF-81EB-4E51-8658-011C0683C5FE" id="BPMNEdge_sid-44F4EFEF-81EB-4E51-8658-011C0683C5FE">
+        <omgdi:waypoint x="235.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C45300A2-051D-4C9F-A922-41BADB5C8FBF" id="BPMNEdge_sid-C45300A2-051D-4C9F-A922-41BADB5C8FBF">
+        <omgdi:waypoint x="865.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="930.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C54EDB00-E7BD-4CE8-9E90-16C7E882331F" id="BPMNEdge_sid-C54EDB00-E7BD-4CE8-9E90-16C7E882331F">
+        <omgdi:waypoint x="75.0" y="175.0"></omgdi:waypoint>
+        <omgdi:waypoint x="135.0" y="175.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

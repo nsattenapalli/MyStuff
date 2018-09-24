@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+	<var name="loginBean" class="com.techsophy.LoginBean" />
+	
+   
+	<decision-state id="someDecision">
+      <if test="loginService.validateUser()" then="displaySuccess" else="displayError" />
+   </decision-state>
+   	
+	<view-state id="displaySuccess" view="success.html"/>
+
+	<view-state id="displayError" view="failure.html" />
+
+</flow>

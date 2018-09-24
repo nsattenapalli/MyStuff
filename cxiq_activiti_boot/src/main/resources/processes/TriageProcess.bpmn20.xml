@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="TriageProcess" name="TriageProcess" isExecutable="true">
+    <serviceTask id="GetRecords" name="GetRecords" activiti:class="com.cxiq.TriageProcess"></serviceTask>
+    <endEvent id="sid-4B1278AF-3E6F-4961-8466-7F0F1E03D2B1"></endEvent>
+    <sequenceFlow id="sid-8F2AE0D8-F0CB-43E9-88CD-60C1C7ADB8E2" sourceRef="GetRecords" targetRef="TriggerTask"></sequenceFlow>
+    <sequenceFlow id="sid-11C3E265-5365-4C4A-89BD-A37DBA66508A" sourceRef="sid-13FCC897-721A-4FB7-BBB6-8763F0326466" targetRef="GetRecords"></sequenceFlow>
+    <callActivity id="TriggerTask" name="TriggerTask" calledElement="TriageTaskProcess" activiti:inheritVariables="false">
+      <extensionElements>
+        <activiti:in source="id" target="id"></activiti:in>
+        <activiti:in source="uname" target="uname"></activiti:in>
+        <activiti:in source="brand" target="brand"></activiti:in>
+      </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="idMap" activiti:elementVariable="id"></multiInstanceLoopCharacteristics>
+    </callActivity>
+    <sequenceFlow id="sid-F07E784B-633D-4066-8938-3D2540ABC24D" sourceRef="TriggerTask" targetRef="sid-4B1278AF-3E6F-4961-8466-7F0F1E03D2B1"></sequenceFlow>
+    <startEvent id="sid-13FCC897-721A-4FB7-BBB6-8763F0326466">
+      <timerEventDefinition>
+        <timeCycle>R/PT24H</timeCycle>
+      </timerEventDefinition>
+    </startEvent>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_TriageProcess">
+    <bpmndi:BPMNPlane bpmnElement="TriageProcess" id="BPMNPlane_TriageProcess">
+      <bpmndi:BPMNShape bpmnElement="GetRecords" id="BPMNShape_GetRecords">
+        <omgdc:Bounds height="80.0" width="100.0" x="210.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-4B1278AF-3E6F-4961-8466-7F0F1E03D2B1" id="BPMNShape_sid-4B1278AF-3E6F-4961-8466-7F0F1E03D2B1">
+        <omgdc:Bounds height="28.0" width="28.0" x="540.0" y="71.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="TriggerTask" id="BPMNShape_TriggerTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="360.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-13FCC897-721A-4FB7-BBB6-8763F0326466" id="BPMNShape_sid-13FCC897-721A-4FB7-BBB6-8763F0326466">
+        <omgdc:Bounds height="31.0" width="31.0" x="105.0" y="69.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-F07E784B-633D-4066-8938-3D2540ABC24D" id="BPMNEdge_sid-F07E784B-633D-4066-8938-3D2540ABC24D">
+        <omgdi:waypoint x="460.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-11C3E265-5365-4C4A-89BD-A37DBA66508A" id="BPMNEdge_sid-11C3E265-5365-4C4A-89BD-A37DBA66508A">
+        <omgdi:waypoint x="136.9998964866937" y="85.44244641551548"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="85.17985611510791"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-8F2AE0D8-F0CB-43E9-88CD-60C1C7ADB8E2" id="BPMNEdge_sid-8F2AE0D8-F0CB-43E9-88CD-60C1C7ADB8E2">
+        <omgdi:waypoint x="310.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
